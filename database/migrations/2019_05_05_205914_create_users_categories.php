@@ -14,8 +14,9 @@ class CreateUsersCategories extends Migration
     public function up()
     {
         Schema::create('users_categories', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('category_id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('category_id');
+            $table->primary(['user_id', 'category_id']);
         });
     }
 
@@ -26,6 +27,6 @@ class CreateUsersCategories extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_categories');
+        //
     }
 }

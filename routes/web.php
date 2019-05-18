@@ -10,11 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
+Route::get('/index', function () {
     return view('index');
 });
+
+Route::post('/', 'CategoryController@NewMainCategory');
 
 Route::get('/welcome', function () {
     return view('welcome');
 });
+
