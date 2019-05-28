@@ -15,7 +15,7 @@
     height: 100%;
     width: 85%;
     float: left;
-    background: #212529; 
+    background: #737b83; 
 }
 
 .level-0 { margin-left: 0px; }
@@ -26,5 +26,5 @@
 .level-5 { margin-left: 150px; }
 
 p.editable-category a{
-    color: red;
+    color: rgb(250, 213, 213);
 }

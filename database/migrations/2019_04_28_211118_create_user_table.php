@@ -16,6 +16,10 @@ class CreateUserTable extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
+            $table->integer('file_dow')->nullable();
+            $table->integer('file_up')->nullable();
+            $table->integer('file_del')->nullable();
+            $table->json('category');
         });
     }
 

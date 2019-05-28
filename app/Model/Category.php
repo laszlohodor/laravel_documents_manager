@@ -10,6 +10,7 @@ namespace App\Model;
 
 
 use Illuminate\Database\Eloquent\Model;
+use App\Model\User;
 
 /**
  * Class Category
@@ -34,11 +35,19 @@ class Category extends Model
      */
 	protected $fillable = ['id', 'name', 'parent_id'];
 
-
-    public function categories()
+    public function children()
     {
-        return $this->hasMany('Document::class', 'category_id');
+        return $this->hasMany(Category::class, 'parent_id', 'id');
     }
 
+    public function parent()
+    {
+        return $this->hasOne(Category::class, 'id', 'parent_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withPivot('category_user', 'user_id');
+    }
 
 }

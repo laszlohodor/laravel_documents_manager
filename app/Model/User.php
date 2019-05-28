@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Model\Category;
 
 /**
  * Class User
@@ -11,7 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int    $id The table associated with the model.
  * @property string $name The name of the user
- * @property int    $categories Users categories
+ * @property int    $file_dow User can download
+ * @property int    $file_up User can upload
+ * @property int    $file_del User can delete
+ * @property json   $category Permission for user category
  *
  * @package App\Model
  */
@@ -24,14 +28,12 @@ class User extends Model
 	/**
      * @var array
      */
-	protected $fillable = ['id', 'name', 'categories'];
-
-  //  public function setName($value)
-  //  {
-  //      return $this->name($value);
-  //  }
+	protected $fillable = ['id', 'name', 'file_dow', 'file_up', 'file_del', 'category'];
 
 
+    protected $casts = [
+        'category' => 'array'
+    ];
 
 	/**
     * Returns documents
@@ -42,18 +44,6 @@ class User extends Model
     {
         return $this->hasMany(Document::class, 'user_id');
     }
-
-    /**
-     * Returns category relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class);
-    }
-
-
 
 
 }
