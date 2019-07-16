@@ -11,16 +11,13 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Model\User;
+use App\Model\Document;
 
 /**
- * Class Category
- * Dokumentum osztály
- *
  *
  * @property integer    $id Category's Id
  * @property string     $name Category's name
  * @property integer    $parent_id Category's parent
-
  *
  * @package App\Models
  */
@@ -45,9 +42,8 @@ class Category extends Model
         return $this->hasOne(Category::class, 'id', 'parent_id');
     }
 
-    public function users()
+    public function categoryDocument()
     {
-        return $this->belongsToMany(User::class)->withPivot('category_user', 'user_id');
+        return $this->hasMany(Document::class, 'category_id', 'id');
     }
-
 }

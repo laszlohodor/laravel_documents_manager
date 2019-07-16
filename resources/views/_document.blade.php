@@ -6,10 +6,10 @@
             <th scope="col">Size</th>  
             <th scope="col">Upload date</th>
             <th scope="col">User Id</th>
-            @if (App\Http\Controllers\CategoryController::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_dow'])
+            @if (App\CategoryClass::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_dow'])
                 <th scope="col">Download</th>
             @endif
-            @if (App\Http\Controllers\CategoryController::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_del'])
+            @if (App\CategoryClass::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_del'])
                 <th scope="col">Delete</th>
             @endif
         </tr>      
@@ -21,10 +21,10 @@
                     <td>{{ $document->size }}</td>
                     <td>{{ $document->upload_date }}</td>
                     <td>{{ $document->user_id}}</td>
-                    @if (App\Http\Controllers\CategoryController::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_dow'])
+                    @if (App\CategoryClass::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_dow'])
                         <td><a href="download/{{$document->id}}"><button type="button" class="btn btn-outline-primary">Download</button></a></td>
                     @endif
-                    @if (App\Http\Controllers\CategoryController::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_del'])
+                    @if (App\CategoryClass::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_del'])
                          <td><a href="delete/{{$document->id}}"><button type="button" class="btn btn-outline-danger">Delete</button></td>
                     @endif
                 </tr> 

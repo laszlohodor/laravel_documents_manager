@@ -9,6 +9,7 @@ use App\Model\Document;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\DocumentClass;
 
 
 class DocumentController extends Controller
@@ -23,10 +24,7 @@ class DocumentController extends Controller
   
     public function FileDelete($id) 
     { 
-        $document =  Document::Find($id);
-        $doc = $document->toArray();
-        unlink(storage_path('app/file/'.$doc['name']));
-        $document->delete();
+        DocumentClass::FileDelete($id);
         return back();
     }
 		

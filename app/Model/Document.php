@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use App\Model\User;
 
  /**
  * Class Document
@@ -28,41 +29,10 @@ class Document extends Model
 	/**
      * @var array
      */
-	protected $fillable = ['id', 'name', 'type', 'size', 'upload_date'];
+	protected $fillable = ['id', 'name', 'type', 'size', 'upload_date', 'category_id', 'user_id'];
 
-    /**
-     * Document size
-     *
-     * @var string
-     */
-    protected $size;
-
-    /**
-     * Document upload date
-     *
-     * @var string
-     */
-    protected $uploadDate;
-
-    /**
-     * Document category
-     *
-     * @var string
-     */
-    protected $category;
-
-    /**
-     * Document user upload
-     *
-     * @var string
-     */
-    protected $user;
-
-
-    public function categories()
+    public function user()
     {
-        return $this->belongsToMany('App\Category');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
-
-
 }

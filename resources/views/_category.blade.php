@@ -1,4 +1,4 @@
-@if (App\Http\Controllers\CategoryController::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_up'])
+@if (App\CategoryClass::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_up'])
     <form method="post" enctype="multipart/form-data" action="{{ action('DocumentController@FileUpload') }}">
         <input type="file" id="fileupload" name="file">
         <input type="hidden" id="user" name="user" value = "{{$loginedUser['id']}}">
@@ -21,7 +21,10 @@
 
 <div class="container">
 @foreach($treeCategories as $treeCategory)
-    {!! $treeCategory !!}
+    <p class=' {{ $treeCategory[0] }} '><a  href=" {{ $treeCategory['id'] }} ">
+    {{ $treeCategory['name'] }} </a>
+    <button data-id="{{ $treeCategory['id'] }}" type="button" id = "user_dialog" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">+</button>
+    </p>
 @endforeach
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -43,6 +46,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary" name='NewSubCatOrChangeCatName'>Save</button>
+                                <input type="submit" class="btn btn-danger" id="deleteCategory" name='deleteCategory' value="Delete">
                         </div>
                         </form>
                 </div>

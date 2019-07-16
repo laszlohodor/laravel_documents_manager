@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use App\CategoryClass;
+use App\DocumentClass;
 
 class CategoryController extends Controller
 {
@@ -19,11 +21,6 @@ class CategoryController extends Controller
 
     public function __construct()
     {
-        self::Login();
-    }
-
-    public function Login()
-    {
         $this->loginedUser = User::find(1)->toArray();
         View::share(['loginedUser' => $this->loginedUser]);
     }
@@ -31,14 +28,12 @@ class CategoryController extends Controller
     public function CategoryDocument($id)
     {   
         self::MainCategory();
-        $documents = Document::where('category_id', $id)
-                    ->get(); 
-
-        $selectedCategory = Category::find($id)->toArray();
+        $selectedCategory= Category::find($id);
+        $categoryDocuments = $selectedCategory->categoryDocument;
 
         View::share([
-            'categoryDocuments' => $documents,
-            'selectedCategory'=> $selectedCategory,
+            'categoryDocuments' => $categoryDocuments,
+            'selectedCategory'=> $selectedCategory->toArray(),
             'categoryId' => $id,
         ]);
 
@@ -47,31 +42,47 @@ class CategoryController extends Controller
 
     public function NewMainCategory(Request $request)
     {
-        $newMainCategory= $request->input('NewCategory');
         $newCategory = new Category();
-        $newCategory->name = $newMainCategory;
+        $newCategory->name = $request->input('NewCategory');
         $newCategory->parent_id = 0;
         $newCategory->save();
 
         return redirect()->to('/'); 
     }
 
-    public function NewSubCatOrChangeCatName(Request $request){
-
+    public function NewSubCatOrChangeCatName(Request $request)
+    {
         $id = $request->input('categoryId');
 
-		if($request->input('NewSubCat')) {
-			$newSubCategoryname = $request->input('NewSubCat');
+        if($request->input('deleteCategory'))
+        {
+            $deleteCategory = Category::find($id);
+            $deleteCategorys = CategoryClass::doTree($deleteCategory);
+
+            foreach ($deleteCategorys as $deleteId) 
+            {
+                $deleteCat= Category::find($deleteId['id']);
+                $docDels = $deleteCat->categoryDocument->toArray();
+                foreach ($docDels as $docDel) { 
+                    DocumentClass::FileDelete($docDel['id']);
+                }
+                $deleteCat->delete();
+            }  
+            return redirect()->to('/');
+        }
+
+        if($request->input('NewSubCat')) 
+        {
 			$newCategory = new Category();
-			$newCategory->name = $newSubCategoryname;
+			$newCategory->name = $request->input('NewSubCat');
 			$newCategory->parent_id = $id;
 			$newCategory->save();
 		}
 		
-		if($request->input('ChangeCatName')) {
-			$changeCategoryname = $request->input('ChangeCatName');
+        if($request->input('ChangeCatName')) 
+        {
 			$changeCategory = Category::find($id);
-			$changeCategory->name = $changeCategoryname;
+			$changeCategory->name = $request->input('ChangeCatName');
 			$changeCategory->update();
 		}
         return redirect()->to($id); 
@@ -85,7 +96,7 @@ class CategoryController extends Controller
 
         foreach($mainCategories as $mainCategory)
         {
-            $trees = self::doTree($mainCategory, 1, $this->loginedUser);
+            $trees = CategoryClass::doTree($mainCategory, 1, $this->loginedUser);
         }
 
         View::share([
@@ -95,31 +106,5 @@ class CategoryController extends Controller
             ]);
 
         return view('index');
-    }
-
-    public static function permissionToCategory($category, $loginedUser){
-
-        return in_array($category['id'], $loginedUser['category']);
-    }
-
-    public static function printCategory($categorys, $level, $loginedUser){
-        $category = $categorys->toArray();
-        $classnames = "level-".$level.' '; 
-
-        return '<p class=' . $classnames . '><a  href="' . $category['id'] .
-        '">' . $category['name'] . '</a><button data-id="' . $category['id']  .
-        '" type="button" id = "user_dialog" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">+</button></p>';
-    }
-
-    public static function doTree($parent, $level, $loginedUser){
-        
-        static $pArray = [];
-		$pTag = self::printCategory($parent, $level, $loginedUser);  
-        array_push($pArray, $pTag);
-
-        foreach($parent->children as  $child){
-            self::doTree($child , $level+1, $loginedUser);     
-        }
-        return  $pArray;
     }
 }
