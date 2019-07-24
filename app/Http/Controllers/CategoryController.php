@@ -40,8 +40,17 @@ class CategoryController extends Controller
         return view('index');
     }
 
+     /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * 
+     */
     public function NewMainCategory(Request $request)
     {
+       $request->validate([
+           'NewCategory' => 'required|max:20'
+           ]);
+      
         $newCategory = new Category();
         $newCategory->name = $request->input('NewCategory');
         $newCategory->parent_id = 0;
@@ -52,6 +61,11 @@ class CategoryController extends Controller
 
     public function NewSubCatOrChangeCatName(Request $request)
     {
+        $request->validate([
+            'NewSubCat' => 'max:20',
+            'ChangeCatName' => 'max:20',
+        ]);
+
         $id = $request->input('categoryId');
 
         if($request->input('deleteCategory'))

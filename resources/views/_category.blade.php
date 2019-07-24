@@ -23,7 +23,7 @@
 @foreach($treeCategories as $treeCategory)
     <p class=' {{ $treeCategory[0] }} '><a  href=" {{ $treeCategory['id'] }} ">
     {{ $treeCategory['name'] }} </a>
-    <button data-id="{{ $treeCategory['id'] }}" type="button" id = "user_dialog" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">+</button>
+    <button data-id="{{ $treeCategory['id'] }}" data-name = "{{ $treeCategory['name'] }}" type="button" id = "user_dialog" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">+</button>
     </p>
 @endforeach
     <div class="modal fade" id="myModal" role="dialog">
@@ -39,7 +39,7 @@
                                 <label>New subcategory:</label>
                                 <input type="text" class="form-control" id="NewSubCat" name="NewSubCat" value=""><br><br>
                                 <label>Change category name:</label>
-                                <input type="text" class="form-control" id="ChangeCatName" name="ChangeCatName"><br>
+                                <input type="text" class="form-control" id="ChangeCatName" name="ChangeCatName" value=""><br>
                                 <input type="hidden" id="categoryId" name="categoryId" value ="">
                                 {{ csrf_field() }}
                             </div> 

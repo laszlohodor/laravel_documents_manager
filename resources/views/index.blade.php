@@ -19,8 +19,8 @@
         <script>
             $(document).on("click", "#user_dialog", function ()
             {
-                var UserName = $(this).data('id');
-                $(".modal-body #categoryId").val( UserName );
+                $(".modal-body #categoryId").val( $(this).data('id') );
+                $(".modal-body #ChangeCatName").val( $(this).data('name') );
             });
             var msg = '{{Session::get('alert')}}';
             var exist = '{{Session::has('alert')}}';

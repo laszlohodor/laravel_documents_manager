@@ -30,6 +30,9 @@ class DocumentController extends Controller
 		
 	public function FileUpload(Request $request)
     {
+        $request->validate([
+            'file' => 'required|max:10000',
+        ]);
         $fileName = $request->file('file')->getClientOriginalName();
         $request->file('file')->storeAs('file', $fileName) ? $upload=true : $upload = false;
 
