@@ -14,20 +14,34 @@ use App\DocumentClass;
 
 class DocumentController extends Controller
 {
-  
-	public function FileDownload($id) 
+    /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * 
+     */
+    public function FileDownload(Request $request)
     { 
-        $document =  Document::Find($id)->toArray();
+        $document =  Document::Find($request->input('documentId'))->toArray();
         $pathToFile = storage_path('app/file/'.$document['name']);
 		return response()->download($pathToFile);
     }
   
-    public function FileDelete($id) 
+    /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * 
+     */
+    public function FileDelete(Request $request) 
     { 
-        DocumentClass::FileDelete($id);
+        DocumentClass::FileDelete($request->input('documentId'));
         return back();
     }
-		
+    
+     /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     */
 	public function FileUpload(Request $request)
     {
         $request->validate([

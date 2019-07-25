@@ -22,10 +22,16 @@
                     <td>{{ $document->upload_date }}</td>
                     <td>{{ $document->user_id}}</td>
                     @if (App\CategoryClass::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_dow'])
-                        <td><a href="download/{{$document->id}}"><button type="button" class="btn btn-outline-primary">Download</button></a></td>
+                        <form method="post" action="{{ action('DocumentController@FileDownload') }}">
+                            {{ csrf_field() }}
+                            <td><button type="submit" class="btn btn-primary" id="documentId" name='documentId' value="{{ $document->id }}">Download</button></td>
+                        </form>
                     @endif
                     @if (App\CategoryClass::permissionToCategory($selectedCategory, $loginedUser) && $loginedUser['file_del'])
-                         <td><a href="delete/{{$document->id}}"><button type="button" class="btn btn-outline-danger">Delete</button></td>
+                        <form method="post" action="{{ action('DocumentController@FileDelete') }}">
+                            {{ csrf_field() }}
+                            <td><button type="submit" class="btn btn-danger" id="documentId" name='documentId' value="{{ $document->id }}">Delete</button></td>
+                        </form>
                     @endif
                 </tr> 
             @endforeach 

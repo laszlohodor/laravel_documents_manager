@@ -25,9 +25,9 @@ Route::post('/subcat', 'CategoryController@NewSubCatOrChangeCatName');
 
 Route::post('/fileupload', 'DocumentController@FileUpload');
 
-Route::get('/download/{id}', 'DocumentController@FileDownload');
+Route::post('/download', 'DocumentController@FileDownload');
 
-Route::get('/delete/{id}', 'DocumentController@FileDelete');
+Route::post('/delete', 'DocumentController@FileDelete');
 
 Route::get('/welcome', function () {
     return view('welcome');

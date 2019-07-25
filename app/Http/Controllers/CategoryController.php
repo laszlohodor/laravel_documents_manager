@@ -25,6 +25,11 @@ class CategoryController extends Controller
         View::share(['loginedUser' => $this->loginedUser]);
     }
 
+    /**
+     *
+     * @param  int $id
+     *
+     */
     public function CategoryDocument($id)
     {   
         self::MainCategory();
@@ -43,6 +48,7 @@ class CategoryController extends Controller
      /**
      *
      * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      * 
      */
     public function NewMainCategory(Request $request)
@@ -59,6 +65,13 @@ class CategoryController extends Controller
         return redirect()->to('/'); 
     }
 
+    
+     /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     * 
+     */
     public function NewSubCatOrChangeCatName(Request $request)
     {
         $request->validate([
